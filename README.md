@@ -118,12 +118,10 @@ This application integrates with Google's Gemini AI API. Each workflow step uses
 ### Feedback System
 - Request changes for any generated content
 - AI incorporates feedback into regenerated content
-- Maintain workflow progress while improving specific steps
 
 ### Progress Tracking
 - Visual progress indicator in sidebar
 - Step-by-step navigation with approval system
-- Clear indication of completed vs pending steps
 
 ### Smart Navigation
 - **Clickable Steps**: Navigate directly to any step in the sidebar
@@ -133,12 +131,9 @@ This application integrates with Google's Gemini AI API. Each workflow step uses
   - 🔒 Locked/inaccessible steps
   - 🔵 Steps with generated content
 - **Content Persistence**: All generated content is preserved during navigation
-- **Toast Notifications**: Helpful messages for navigation feedback
 
 ### Session Management
 - **Automatic Persistence**: All data automatically saved to browser session storage
-- **Page Refresh Safe**: Work is preserved even after browser refresh or accidental close
-- **State Recovery**: Returns to exact step and state when reopening the application
 - **Smart Generation**: Never regenerates existing content unless feedback is provided
 - **Performance Optimized**: Eliminates unnecessary API calls for existing content
 
