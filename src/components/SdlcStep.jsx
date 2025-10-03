@@ -36,7 +36,7 @@ function SdlcStep({ stepInfo, content, isLoading, onApprove, onSubmitFeedback, o
       <div className="bg-white p-8 rounded-xl shadow-md min-h-[400px] border border-gray-100">
         {isLoading ? (
           <div className="flex justify-center items-center h-64">
-            <Loader message={`🤖 Gemini is crafting your ${stepInfo.label.toLowerCase()}...`} />
+            <Loader message={`🤖 ProtoFlow-AI is crafting your ${stepInfo.label.toLowerCase()}...`} />
           </div>
         ) : content ? (
           <div className="prose max-w-none prose-headings:text-gray-800 prose-p:text-gray-700" 

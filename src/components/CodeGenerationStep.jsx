@@ -89,7 +89,7 @@ function CodeGenerationStep({ stepInfo, content, isLoading, onApprove, onSubmitF
           <div className="bg-gray-800 text-white rounded-xl shadow-md flex-grow flex flex-col overflow-hidden min-h-0">
             {isLoading ? (
               <div className="p-4 flex-grow flex items-center justify-center">
-                <Loader message="Gemini is generating code..." />
+                <Loader message="ProtoFlow-AI is generating code..." />
               </div>
             ) : (
               <div className="flex-grow min-h-0">

@@ -64,9 +64,9 @@ function ApiInput({ onStartWorkflow, initialApiKey, initialProjectPrompt }) {
 
   return (
     <div className="bg-white p-8 rounded-xl shadow-md">
-      <h1 className="text-4xl font-bold text-gray-800">Welcome to the AI-Powered SDLC Assistant</h1>
+      <h1 className="text-4xl font-bold text-gray-800">Welcome to ProtoFlow-AI</h1>
       <p className="mt-2 text-gray-600">
-        Transform your project ideas into complete development workflows using Google Gemini AI. 
+        Transform your project ideas into complete development workflows using ProtoFlow-AI. 
         From user stories to deployment guides - all generated just for you!
       </p>
       

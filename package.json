@@ -10,11 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
     "@monaco-editor/react": "^4.7.0",
     "marked": "^12.0.0",
     "monaco-editor": "^0.53.0",
     "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react-dom": "^19.1.1",
+    "reactflow": "^11.11.4"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^5.0.0",

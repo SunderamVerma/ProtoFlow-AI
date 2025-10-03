@@ -81,7 +81,7 @@ function Sidebar({
   return (
     <aside className="w-1/4 bg-white border-r border-gray-200 p-6 flex flex-col h-full fixed">
       <div className="flex-grow overflow-y-auto">
-        <h1 className="text-2xl font-bold text-blue-600 text-center mb-2">✨ Gemini SDLC Assistant</h1>
+        <h1 className="text-2xl font-bold text-blue-600 text-center mb-2">✨ ProtoFlow-AI SDLC Assistant</h1>
         <p className="text-center text-gray-500 mb-6 text-sm">Your AI-powered project partner</p>
         <div className="space-y-1">
           {steps.map(step => {
