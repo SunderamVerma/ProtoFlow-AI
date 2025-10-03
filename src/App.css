@@ -1,0 +1,146 @@
+/* Custom styles and animations */
+body {
+  font-family: 'Inter', sans-serif;
+  overflow: hidden; /* Prevent body scroll, let components handle their own scrolling */
+}
+
+/* Loading Spinner Animation */
+.loader {
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #3498db;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Custom scrollbar for webkit browsers */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Balloon animation for completion */
+.balloon {
+  width: 70px;
+  height: 90px;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  position: fixed;
+  bottom: -100px;
+  animation: rise 8s infinite ease-in;
+  z-index: 100;
+}
+
+.balloon::after {
+  content: '';
+  position: absolute;
+  width: 4px;
+  height: 20px;
+  background: rgba(0,0,0,0.2);
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -10px;
+  border-radius: 0 0 2px 2px;
+}
+
+@keyframes rise {
+  0% {
+    bottom: -100px;
+    transform: translateX(0);
+  }
+  100% {
+    bottom: 1080px; /* Adjust if needed for full screen height */
+    transform: translateX(200px);
+  }
+}
+
+/* Navigation styles */
+.step-item {
+  transition: all 0.2s ease-in-out;
+}
+
+.step-item:hover {
+  transform: translateX(2px);
+}
+
+.step-item.accessible:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.step-item.locked:hover {
+  background-color: #fef2f2 !important;
+  transform: none;
+}
+
+.step-item.locked {
+  cursor: not-allowed;
+}
+
+/* Fade in animation for demo elements */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+/* Pulse animation for active demo phases */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Demo progress indicators */
+.demo-phase-completed {
+  background: linear-gradient(45deg, #10b981, #059669);
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+}
+
+.demo-phase-active {
+  background: linear-gradient(45deg, #3b82f6, #2563eb);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+  animation: pulse 2s infinite;
+}
+
+/* Interactive demo card hover effects */
+.demo-card {
+  transition: all 0.3s ease;
+}
+
+.demo-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
