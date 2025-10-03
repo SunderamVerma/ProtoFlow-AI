@@ -102,13 +102,41 @@ function App() {
             });
           }
           
-          console.log(`🤖 Calling Gemini API for ${stepId}...`);
+          console.log(`🤖 Calling ProtoFlow-AI API for ${stepId}...`);
           content = await generateWithGemini(prompt, WORKFLOW_STEPS.find(s => s.id === stepId).label, apiKey);
           console.log(`✅ Generated content length:`, content.length, 'characters');
           console.log(`📄 Content preview:`, content.substring(0, 200) + '...');
           
         } else if (stepId === 'code_review') {
-          content = `This is a manual review step. Please review the generated code in the previous step and approve when ready.`;
+          // Get the generated code from the code_generation step
+          const generatedCode = generatedContent['code_generation'];
+          if (!generatedCode || generatedCode.trim().length === 0) {
+            content = `⚠️ No code available for review. Please generate code in the "Code Generation" step first.`;
+          } else {
+            // Create a prompt that includes the actual generated code for review
+            const codeReviewPrompt = `Act as a senior software engineer and perform a thorough code review on the following generated code:
+
+PROJECT CONTEXT: ${projectPrompt}
+
+GENERATED CODE TO REVIEW:
+\`\`\`html
+${generatedCode}
+\`\`\`
+
+Please provide a comprehensive code review covering:
+1. **Code Quality**: Structure, readability, maintainability
+2. **Security**: Potential vulnerabilities and security best practices
+3. **Performance**: Optimization opportunities and performance considerations
+4. **Best Practices**: Adherence to modern web development standards
+5. **Functionality**: Logic review and potential bugs
+6. **Accessibility**: WCAG compliance and accessibility improvements
+7. **Recommendations**: Specific suggestions for improvement
+
+Format your response with clear sections and actionable feedback.`;
+
+            console.log(`🔍 Performing code review for generated code...`);
+            content = await generateWithGemini(codeReviewPrompt, 'Code Review', apiKey);
+          }
         }
       
         // Save to both local state and session storage
