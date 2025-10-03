@@ -33,53 +33,114 @@ function App() {
   useEffect(() => {
     const generateContent = async () => {
       const stepId = currentStep;
+      console.log(`🔍 useEffect triggered for step: ${stepId}`);
+      console.log(`📊 Current state:`, {
+        stepId,
+        isLoading,
+        hasApiKey: !!apiKey,
+        hasProjectPrompt: !!projectPrompt,
+        hasCurrentContent: !!(generatedContent[stepId] && generatedContent[stepId].trim().length > 0),
+        hasFeedback: !!feedback[stepId]
+      });
+      
       // Skip generation for special steps
-      if (stepId === 'api_input' || stepId === 'completion' || isLoading) return;
+      if (stepId === 'api_input' || stepId === 'completion') {
+        console.log(`⏭️ Skipping special step: ${stepId}`);
+        return;
+      }
+      
+      if (isLoading) {
+        console.log(`⏳ Already loading, skipping...`);
+        return;
+      }
+
+      if (!apiKey) {
+        console.log(`❌ No API key available`);
+        return;
+      }
+
+      if (!projectPrompt) {
+        console.log(`❌ No project prompt available`);
+        return;
+      }
 
       // Check if we already have content (avoid unnecessary API calls)
       const hasStoredContent = sessionStorage.hasContentForStep(stepId);
       const hasCurrentContent = generatedContent[stepId] && generatedContent[stepId].trim().length > 0;
       
+      console.log(`📋 Content check:`, {
+        hasStoredContent,
+        hasCurrentContent,
+        shouldRegenerateWithFeedback: !!feedback[stepId]
+      });
+      
       // Only generate if we don't have content or need to regenerate based on feedback
       const shouldGenerate = (!hasStoredContent && !hasCurrentContent) || feedback[stepId];
-      if (!shouldGenerate) return;
+      
+      if (!shouldGenerate) {
+        console.log(`✅ Content already exists for ${stepId}, skipping generation`);
+        return;
+      }
 
-      console.log(`🚀 Generating content for: ${stepId}`); // Development log
+      console.log(`🚀 Starting content generation for: ${stepId}`);
       setIsLoading(true);
       
       try {
         const promptTemplate = PROMPT_TEMPLATES[stepId];
+        console.log(`📝 Found prompt template for ${stepId}:`, !!promptTemplate);
+        
         let content = '';
         if (promptTemplate) {
           let prompt = promptTemplate.replace('{prompt}', projectPrompt);
           if (feedback[stepId]) {
+            console.log(`💬 Adding feedback to prompt:`, feedback[stepId].substring(0, 100) + '...');
             prompt += `\n\nPlease incorporate this feedback: ${feedback[stepId]}`;
             setFeedback(prev => {
               const newFeedback = { ...prev, [stepId]: null };
               sessionStorage.saveFeedbackStates(newFeedback);
-            return newFeedback;
-          });
+              return newFeedback;
+            });
+          }
+          
+          console.log(`🤖 Calling Gemini API for ${stepId}...`);
+          content = await generateWithGemini(prompt, WORKFLOW_STEPS.find(s => s.id === stepId).label, apiKey);
+          console.log(`✅ Generated content length:`, content.length, 'characters');
+          console.log(`📄 Content preview:`, content.substring(0, 200) + '...');
+          
+        } else if (stepId === 'code_review') {
+          content = `This is a manual review step. Please review the generated code in the previous step and approve when ready.`;
         }
-        content = await generateWithGemini(prompt, WORKFLOW_STEPS.find(s => s.id === stepId).label, apiKey);
-      } else if (stepId === 'code_review') {
-        content = `This is a manual review step. Please review the generated code in the previous step and approve when ready.`;
-      }
       
-      // Save to both local state and session storage
-      setGeneratedContent(prev => {
-        const newContent = { ...prev, [stepId]: content };
-        sessionStorage.saveGeneratedContent(stepId, content);
-        return newContent;
-      });
+        // Save to both local state and session storage
+        if (content && content.trim().length > 0) {
+          console.log(`💾 Saving generated content for ${stepId}`);
+          setGeneratedContent(prev => {
+            const newContent = { ...prev, [stepId]: content };
+            sessionStorage.saveGeneratedContent(stepId, content);
+            return newContent;
+          });
+          console.log(`✅ Content successfully saved for ${stepId}`);
+        } else {
+          console.log(`⚠️ Generated content is empty for ${stepId}`);
+        }
       
       } catch (error) {
         console.error(`❌ Error generating content for ${stepId}:`, error);
+        console.error(`🔍 Error details:`, {
+          message: error.message,
+          stack: error.stack,
+          stepId,
+          hasApiKey: !!apiKey,
+          hasProjectPrompt: !!projectPrompt
+        });
+        
         // Show user-friendly error message
         setToast({
-          message: `Failed to generate content for ${stepId}. Please check your API key and try again.`,
+          message: `Failed to generate content for ${stepId}. Please check your API key and try again. Error: ${error.message}`,
           type: 'error'
         });
       } finally {
+        console.log(`🏁 Finished generation attempt for ${stepId}`);
         setIsLoading(false);
       }
     };

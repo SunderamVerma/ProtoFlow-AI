@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import Editor from '@monaco-editor/react';
 import Loader from './Loader';
 import Controls from './Controls';
 
@@ -8,6 +9,7 @@ function CodeGenerationStep({ stepInfo, content, isLoading, onApprove, onSubmitF
   const [showFullPreview, setShowFullPreview] = useState(false);
   const [previewKey, setPreviewKey] = useState(0);
   const iframeRef = useRef(null);
+  const editorRef = useRef(null);
 
   // Update editable code when content changes
   useEffect(() => {
@@ -17,8 +19,12 @@ function CodeGenerationStep({ stepInfo, content, isLoading, onApprove, onSubmitF
     }
   }, [content]);
 
-  const handleCodeChange = (event) => {
-    setEditableCode(event.target.value);
+  const handleEditorDidMount = (editor, monaco) => {
+    editorRef.current = editor;
+  };
+
+  const handleCodeChange = (value) => {
+    setEditableCode(value || '');
   };
 
   const handleRunCode = () => {
@@ -87,12 +93,31 @@ function CodeGenerationStep({ stepInfo, content, isLoading, onApprove, onSubmitF
               </div>
             ) : (
               <div className="flex-grow min-h-0">
-                <textarea
+                <Editor
+                  height="100%"
+                  defaultLanguage="html"
+                  language="html"
                   value={editableCode}
                   onChange={handleCodeChange}
-                  className="w-full h-full p-4 font-mono text-sm bg-gray-900 text-green-400 border border-gray-600 rounded resize-none"
-                  placeholder="Generated HTML code will appear here..."
-                  spellCheck={false}
+                  onMount={handleEditorDidMount}
+                  theme="vs-dark"
+                  options={{
+                    fontSize: 14,
+                    minimap: { enabled: true },
+                    scrollBeyondLastLine: false,
+                    wordWrap: 'on',
+                    automaticLayout: true,
+                    formatOnPaste: true,
+                    formatOnType: true,
+                    tabSize: 2,
+                    lineNumbers: 'on',
+                    folding: true,
+                    bracketPairColorization: { enabled: true },
+                    suggest: {
+                      showKeywords: true,
+                      showSnippets: true,
+                    },
+                  }}
                 />
               </div>
             )}
