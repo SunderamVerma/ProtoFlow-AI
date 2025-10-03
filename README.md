@@ -1,6 +1,6 @@
-# Gemini SDLC Assistant (React)
+# ProtoFlow-AI
 
-An AI-powered Software Development Life Cycle (SDLC) assistant built with React, Vite, and Tailwind CSS. This application helps automate the software development process from idea to deployment using Google's Gemini AI.
+Experience rapid prototyping with the ProtoFlow AI, your AI companion for accelerated development. This tool automates the entire software lifecycle, transforming a single project idea into a complete, interactive prototype. It generates everything from user stories to a live, reviewable web app. Go from concept to code in minutes.
 
 ## Features
 
@@ -80,16 +80,17 @@ npm run lint
 src/
 ├── components/           # React components
 │   ├── ApiInput.jsx     # Initial setup component
-│   ├── Balloons.jsx     # Celebration animation
 │   ├── CodeGenerationStep.jsx  # Code generation with preview
 │   ├── Completion.jsx   # Workflow completion
 │   ├── Controls.jsx     # Action buttons and feedback
 │   ├── Loader.jsx       # Loading spinner
 │   ├── SdlcStep.jsx     # Generic step component
-│   └── Sidebar.jsx      # Navigation sidebar
+│   ├── Sidebar.jsx      # Navigation sidebar
+│   └── Toast.jsx        # Toast notifications
 ├── utils/               # Utility functions
 │   ├── api.js          # API calls and file operations
-│   └── constants.js    # Workflow steps and prompt templates
+│   ├── constants.js    # Workflow steps and prompt templates
+│   └── sessionStorage.js # Session storage utilities
 ├── App.jsx             # Main application component
 ├── App.css             # Custom styles and animations
 ├── index.css           # Tailwind CSS imports
@@ -147,15 +148,4 @@ Feel free to submit issues, fork the repository, and create pull requests for an
 
 ## License
 
-This project is open source and available under the [MIT License](LICENSE).+ Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+This project is open source and available under the [MIT License](LICENSE).

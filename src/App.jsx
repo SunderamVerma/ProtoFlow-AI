@@ -33,30 +33,18 @@ function App() {
   useEffect(() => {
     const generateContent = async () => {
       const stepId = currentStep;
-      console.log(`🔍 useEffect triggered for step: ${stepId}`);
-      
       // Skip generation for special steps
-      if (stepId === 'api_input' || stepId === 'completion' || isLoading) {
-        console.log(`⏭️ Skipping generation for ${stepId} (special step or loading)`);
-        return;
-      }
+      if (stepId === 'api_input' || stepId === 'completion' || isLoading) return;
 
       // Check if we already have content (avoid unnecessary API calls)
       const hasStoredContent = sessionStorage.hasContentForStep(stepId);
       const hasCurrentContent = generatedContent[stepId] && generatedContent[stepId].trim().length > 0;
       
-      console.log(`📋 Content check for ${stepId}: stored=${hasStoredContent}, current=${hasCurrentContent}`);
-      
       // Only generate if we don't have content or need to regenerate based on feedback
       const shouldGenerate = (!hasStoredContent && !hasCurrentContent) || feedback[stepId];
-      
-      console.log(`🎯 Should generate for ${stepId}: ${shouldGenerate}`);
-      
       if (!shouldGenerate) return;
 
       console.log(`🚀 Generating content for: ${stepId}`); // Development log
-      console.log(`🔑 API Key available: ${apiKey ? 'Yes' : 'No'}`);
-      console.log(`📝 Project prompt: ${projectPrompt ? projectPrompt.substring(0, 50) + '...' : 'None'}`);
       setIsLoading(true);
       
       try {
@@ -88,7 +76,7 @@ function App() {
         console.error(`❌ Error generating content for ${stepId}:`, error);
         // Show user-friendly error message
         setToast({
-          message: `Failed to generate content for ${stepId}. Error: ${error.message}. Please check your API key and try again.`,
+          message: `Failed to generate content for ${stepId}. Please check your API key and try again.`,
           type: 'error'
         });
       } finally {
